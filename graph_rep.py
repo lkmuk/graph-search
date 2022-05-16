@@ -1,9 +1,10 @@
 class directed_graph:
-    def __init__(self):
+    def __init__(self,name: str):
         # aka adjacency table/ more aptly "descendant table"
         # why not save the edges instead?
         #    adjacency table is an efficient representation
-
+        assert isinstance(name, str)
+        self.name = name
         self._adj = dict()
         # how it should look like
         #   'node1':  set("node1's descendant node A" , "node1's descendant node B"
@@ -52,9 +53,15 @@ class directed_graph:
         return out
 
     def __str__(self):
-        out = ""
-        for parent_node in self._adj.keys():
-            out = out + f"{parent_node} --> {self._adj[parent_node]} \n"
+        out = "-"*20 + "\nGraph name: " + self.name + f"\n"
+        out += " contains the following nodes and directed edges:\n"
+        leaf_nodes_list = self.list_leaf_nodes()
+        for node in self._adj.keys():
+            if node in leaf_nodes_list:
+                out += f"{node} (which is a leaf node)\n"
+            else:
+                out += f"{node} --> {self._adj[node]} \n"
+        out += "-"*20
         return out
         
     def print_adj_table(self):
@@ -65,8 +72,8 @@ class directed_graph:
         pass
 
 class directed_graph_weighted(directed_graph):
-    def __init__(self):
-        super().__init__()
+    def __init__(self,name: str):
+        super().__init__(name)
         self._cost_edge = dict()
         self._cost_node = dict() # could be used for heuristic cost-to-go
     def add_node(self, node_name, node_weight = 0.0):
@@ -95,7 +102,7 @@ class directed_graph_weighted(directed_graph):
 
 def test_directed_graph():
     print("creating & editing a graph")
-    A = directed_graph()
+    A = directed_graph("A dummy graph")
     A.add_edge('E','C')
     A.add_edge('E','B')
     A.add_edge('H','A')
@@ -118,7 +125,7 @@ def test_directed_graph():
 
 def test_directed_weighted_graph():
     print("creating & editing a graph")
-    A = directed_graph_weighted()
+    A = directed_graph_weighted("dummy graph with node and edge weights")
     A.add_node('E',10.0)
     A.add_node('C', 5.0)
     A.add_node('A', 20.0)

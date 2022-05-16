@@ -132,7 +132,8 @@ class Astar:
                         #   are stored in the tree instead of the buffer                    
 
             if len(self._buffer)== 0:
-                raise ValueError("Can't find a solution")
+                # raise ValueError("Can't find a solution")
+                return None, None
         
         # backtracing the path (and validate the heuristics' admissibility)
         # initialization
@@ -151,20 +152,15 @@ class Astar:
                     print(warnTxt)
 
             backward_path_seq.append(node_next)
-        return backward_path_seq[::-1], self.tree_cum_cost[self.goal]
+        return tuple(backward_path_seq[::-1]), self.tree_cum_cost[self.goal]
 
-def test_German_example():
-    from graph_examples import make_german_wiki_example
-    from numpy.testing import assert_almost_equal
-    net = make_german_wiki_example()
-    solver = Astar("SB", "WB", net)
-    opt_path , opt_cost = solver.solve()
-    print("Path: ", opt_path)
-    print("Path Cost: ", opt_cost)
-    
-    assert opt_path == ['SB', 'KL', 'Frankfurt', 'WB']
-    assert_almost_equal(opt_cost,289.0)
-    assert solver.iter == 6
 
 if __name__ == "__main__":
-    test_German_example()
+    from graph_examples import german_city_network_acc_de_wikipedia
+    from graph_examples import longway_round
+
+    tcase1 = german_city_network_acc_de_wikipedia()
+    tcase1.verify(Astar, num_expected_iter=6)
+
+    tcase2 = longway_round()
+    tcase2.verify(Astar, num_expected_iter=6)
