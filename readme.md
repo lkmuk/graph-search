@@ -66,7 +66,7 @@ except from the distinctive node opening strategies (FIFO vs LIFO).
   * `solve()`
 
 * Algorithms
-  * Dijkstra (can be considered a special case of A*, but no longer multi-goal query compatible!)
+  * Dijkstra (can be considered a special case of A*, but the search policy is no longer goal-guided!)
   * A*
     > discussions on the heuristic cost (function):
     >  1. its interpretation/ admissibility requirement
